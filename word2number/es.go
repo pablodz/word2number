@@ -10,6 +10,7 @@ import (
 )
 
 var (
+	// Slices without accents
 	unitsES_LVL0 = []string{
 		"cero",
 		"uno",
@@ -27,15 +28,25 @@ var (
 		"trece",
 		"catorce",
 		"quince",
-		"dieciséis",
+		"dieciseis",
 		"diecisiete",
 		"dieciocho",
 		"diecinueve",
+		"veinte",
+		"veintiuno",
+		"veintidos",
+		"veintitres",
+		"veinticuatro",
+		"veinticinco",
+		"veintiseis",
+		"veintisiete",
+		"veintiocho",
+		"veintinueve",
 	}
 	unitsES_LVL1 = []string{
 		"",
 		"",
-		"veinte",
+		"",
 		"treinta",
 		"cuarenta",
 		"cincuenta",
@@ -45,29 +56,68 @@ var (
 		"noventa",
 	}
 
-	unitsES_LVL2 = []string{
-		"", // cien
-		"", // doscientos
-		"", // trescientos
-		"", // cuatrocientos
+	unitsES_LVL2_1 = []string{
+		"",
+		"cien",
+		"doscientos",
+		"trescientos",
+		"cuatrocientos",
 		"quinientos",
-		"", // seiscientos
-		"", // setecientos
-		"", // ochocientos
-		"", // novecientos
+		"seiscientos",
+		"setecientos",
+		"ochocientos",
+		"novecientos",
 	}
 
-	unitsES_LVL3 = []string{
+	unitsES_LVL2_2 = []string{
+		"",
 		"ciento",
-		"mil",
-		"millón",
-		"billón",
-		"trillón",
+		"doscientos",
+		"trescientos",
+		"cuatrocientos",
+		"quinientos",
+		"seiscientos",
+		"setecientos",
+		"ochocientos",
+		"novecientos",
 	}
+
+	mapLVL3 = map[string]string{
+		"dos mil":    "dosmil",
+		"tres mil":   "tresmil",
+		"cuatro mil": "cuatromil",
+		"cinco mil":  "cincomil",
+		"seis mil":   "seismil",
+		"siete mil":  "setemil",
+		"ocho mil":   "ochomil",
+		"nueve mil":  "nuevemil",
+	}
+
+	unitsES_LVL3_1 = []string{
+		"",
+		"",
+		"dosmil",
+		"tresmil",
+		"cuatromil",
+		"cincomil",
+		"seismil",
+		"setemil",
+		"ochomil",
+		"nuevemil",
+	}
+
+	unitsES_LVL4_1 = []string{
+		"cien",
+		"mil",
+		"millon",
+		"billon",
+		"trillon",
+	}
+
 	conectorsES = "y"
 )
 
-func Text2NumESNoOrder(text string) (string, error) {
+func Text2NumES(text string) (string, error) {
 
 	// LVL 0
 	Dictionary := map[string]int{}
@@ -78,160 +128,93 @@ func Text2NumESNoOrder(text string) (string, error) {
 	for i, v := range unitsES_LVL1 {
 		Dictionary[v] = i * 10
 	}
-	// LVL 2
-	for i, v := range unitsES_LVL3 {
+	// LVL 2_1
+	for i, v := range unitsES_LVL2_1 {
+		Dictionary[v] = i * 100
+	}
+	// LVL 2_2
+	for i, v := range unitsES_LVL2_2 {
+		Dictionary[v] = i * 100
+	}
+	// LVL 3_1
+	for i, v := range unitsES_LVL3_1 {
+		Dictionary[v] = i * 1000
+	}
+	// LVL 4_1
+	for i, v := range unitsES_LVL4_1 {
 		if i == 0 {
 			Dictionary[v] = int(math.Pow(10, float64(2)))
 		} else {
 			Dictionary[v] = int(math.Pow(10, float64(i*3)))
 		}
 	}
-	fmt.Printf("Dictionary: %+v\n", Dictionary)
+	// fmt.Printf("Dictionary: %+v\n", Dictionary)
 
 	/* Algorithm */
 	newText := []string{}
 	text = strings.Replace(text, ".", " . ", -1)
 	text = strings.Replace(text, ",", " , ", -1)
+	for k, v := range mapLVL3 {
+		text = strings.Replace(text, k, v, -1)
+	}
 	textSplitted := strings.Split(text, " ")
 	for _, word := range textSplitted {
 		if word == "" {
 			continue
 		}
 		wordLower := strings.ToLower(word)
-		// fmt.Println("word: <" + word + ">")
+		// fmt.Println("wordLower: <" + wordLower + ">")
 		// First iteration
+
+		wordLower = utils.RemoveAccentMarks(wordLower)
 		switch {
-		case wordLower == conectorsES:
-			newText = append(newText, wordLower)
-		case utils.IsItemInSlice(wordLower, unitsES_LVL0) || utils.IsItemInSlice(wordLower, unitsES_LVL1) || utils.IsItemInSlice(wordLower, unitsES_LVL3):
+		case utils.IsItemInSlice(wordLower, unitsES_LVL0) || utils.IsItemInSlice(wordLower, unitsES_LVL1):
+			// fmt.Println("case 1")
 			value := Dictionary[wordLower]
 			newText = append(newText, fmt.Sprint(value))
-		case strings.Contains(wordLower, "y"):
-
+		case utils.IsItemInSlice(wordLower, unitsES_LVL2_1) || utils.IsItemInSlice(wordLower, unitsES_LVL2_2) ||
+			utils.IsItemInSlice(wordLower, unitsES_LVL3_1) ||
+			utils.IsItemInSlice(wordLower, unitsES_LVL4_1):
+			// fmt.Println("case 2")
+			value := Dictionary[wordLower]
+			newText = append(newText, fmt.Sprint(value))
+			newText = append(newText, "y")
 		default:
+			// fmt.Println("case default")
 			newText = append(newText, word)
 		}
 
 	}
-	fmt.Println("newText: ", newText)
+	// fmt.Println("newText: ", newText)
 
-	for i, v := range newText {
-		fmt.Println("newText[", i, "]: ", v)
+	for i := 0; i < len(newText)-1; i++ {
+		// fmt.Println("newText[", i, "]: ", v)
+		v := newText[i]
+
 		if v == conectorsES {
 			x := newText[i-1]
 			y := newText[i+1]
-			xNum, _ := strconv.Atoi(x)
-			yNum, _ := strconv.Atoi(y)
+			xNum, err := strconv.Atoi(x)
+			if err != nil {
+				continue
+			}
+			yNum, err := strconv.Atoi(y)
+			if err != nil {
+				continue
+			}
 			zNum := xNum + yNum
 			// fmt.Println("x: ", x, "y: ", y, "z: ", zNum)
 			newText = append(newText[:i-1], newText[i+2:]...)
 			newText = utils.InsertValueByIndexInSlice(newText, i-1, fmt.Sprint(zNum))
 		}
+		if v == conectorsES {
+			i = i - 1
+		}
 	}
-	fmt.Println("newText: ", newText)
+	// remove y from the end of the text if it exists
+	if newText[len(newText)-1] == "y" {
+		newText = newText[:len(newText)-1]
+	}
+	// fmt.Println("newText: ", newText)
 	return strings.Join(newText, " "), nil
 }
-
-// func Text2NumESNoOrder(text string) (int, error) {
-
-// 	// LVL 0
-// 	DictionaryLVL0 := map[string]int{}
-// 	DictionaryLVL1 := map[string]int{}
-// 	DictionaryLVL2 := map[string]int{}
-// 	for i, v := range unitsES_LVL0 {
-// 		DictionaryLVL0[v] = i
-// 	}
-// 	// LVL 1
-// 	for i, v := range unitsES_LVL1 {
-// 		DictionaryLVL1[v] = (i + 2) * 10 // started from 20
-// 	}
-// 	// LVL 2
-// 	DictionaryLVL2["ciento"] = 100
-// 	DictionaryLVL2["mil"] = 1000
-// 	DictionaryLVL2["millón"] = 1000000
-// 	DictionaryLVL2["millones"] = 1000000
-
-// 	// print dicts with fields and values
-// 	fmt.Printf("DictionaryLVL0: %+v\n", DictionaryLVL0)
-// 	fmt.Printf("DictionaryLVL1: %+v\n", DictionaryLVL1)
-// 	fmt.Printf("DictionaryLVL2: %+v\n", DictionaryLVL2)
-
-// 	/* Algorithm */
-// 	tempNumber := 0
-// 	finalNumber := 0
-// 	decimalFlag := false
-// 	numberFlag := false
-// 	finalString := ""
-
-// 	textSplitted := strings.Split(text, " ")
-// 	fmt.Println("textSplitted:", textSplitted)
-// 	for i, word := range textSplitted {
-// 		fmt.Println("word", word)
-
-// 		if utils.IsItemInSlice(strings.ToLower(word), unitsES_LVL0) ||
-// 			utils.IsItemInSlice(strings.ToLower(word), unitsES_LVL1) ||
-// 			utils.IsItemInSlice(strings.ToLower(word), unitsES_LVL2) &&
-// 				!decimalFlag {
-// 			fmt.Println("1º condition")
-// 			numberFlag = true
-// 			if utils.IsItemInSlice(strings.ToLower(word), unitsES_LVL0) {
-// 				fmt.Println("1.1º condition", word)
-// 				tempNumber += DictionaryLVL0[strings.ToLower(word)]
-// 			} else if utils.IsItemInSlice(strings.ToLower(word), unitsES_LVL1) {
-// 				fmt.Println("1.2º condition")
-// 				tempNumber += DictionaryLVL1[strings.ToLower(word)]
-// 			} else if strings.ToLower(word) == unitsES_LVL2[0] { // "ciento"
-// 				fmt.Println("1.3º condition")
-// 				tempNumber *= 100
-// 			} else if utils.IsItemInSlice(strings.ToLower(word), unitsES_LVL1[1:]) { // "mil", "millón"
-// 				fmt.Println("1.4º condition")
-// 				finalNumber += tempNumber + tempNumber*DictionaryLVL2[strings.ToLower(word)]
-// 				tempNumber = 0
-// 			}
-
-// 		} else if utils.IsItemInSlice(strings.ToLower(word), unitsES_LVL0) &&
-// 			decimalFlag {
-// 			fmt.Println("2º condition")
-// 			finalString += fmt.Sprint(DictionaryLVL0[strings.ToLower(word)])
-// 		} else if word == conectorsES &&
-// 			(utils.IsItemInSlice(strings.ToLower(textSplitted[i+1]), unitsES_LVL0) ||
-// 				utils.IsItemInSlice(strings.ToLower(textSplitted[i+1]), unitsES_LVL1) ||
-// 				utils.IsItemInSlice(strings.ToLower(textSplitted[i+1]), unitsES_LVL2)) {
-// 			fmt.Println("3º condition")
-// 			continue
-// 		} else if word == "punto" &&
-// 			(utils.IsItemInSlice(strings.ToLower(textSplitted[i+1]), unitsES_LVL0) ||
-// 				utils.IsItemInSlice(strings.ToLower(textSplitted[i+1]), unitsES_LVL1) ||
-// 				utils.IsItemInSlice(strings.ToLower(textSplitted[i+1]), unitsES_LVL2)) {
-// 			fmt.Println("4º condition")
-// 			finalNumber += tempNumber
-// 			decimalFlag = true
-// 			numberFlag = false
-// 			finalString += " " + fmt.Sprint(finalNumber) + "."
-// 			continue
-// 		} else {
-// 			fmt.Println("5º condition")
-// 			decimalFlag = false
-// 			if numberFlag {
-// 				finalNumber += tempNumber
-// 				if word != "." && word != "?" && word != "!" {
-// 					finalString += " " + fmt.Sprint(finalNumber) + " " + word
-// 				} else {
-// 					finalString += " " + fmt.Sprint(finalNumber) + word
-// 				}
-// 				numberFlag = false
-// 			} else {
-// 				if word != "." && word != "?" && word != "!" {
-// 					finalString += " " + word
-// 				} else {
-// 					finalString += word
-// 				}
-// 			}
-// 			finalNumber = 0
-// 			tempNumber = 0
-// 		}
-// 		fmt.Println("finalString", finalString)
-// 	}
-// 	fmt.Println("finalString", finalString)
-// 	return finalNumber, nil
-// }

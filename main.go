@@ -7,9 +7,11 @@ import (
 )
 
 func main() {
-	number, err := word2number.Text2NumESNoOrder("Mi código es tres cuatro cinco seis, veinte. Treinta y uno. Noventa y cinco. Trescientos noventa y cuatro .")
+	text := "Mi código es cuatro mil novecientos noventa y nueve , y llueve cada cuatro mil novecientos noventa y ocho"
+	textFixed, err := word2number.Text2NumES(text)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("number", number)
+	fmt.Println("text:\t\t", text)
+	fmt.Println("textFixed:\t", textFixed)
 }

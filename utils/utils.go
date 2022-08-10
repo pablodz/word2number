@@ -1,5 +1,13 @@
 package utils
 
+import (
+	"unicode"
+
+	"golang.org/x/text/runes"
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
+)
+
 func IsItemInSlice(item string, slice []string) bool {
 	for _, v := range slice {
 		if v == item {
@@ -16,4 +24,10 @@ func InsertValueByIndexInSlice(a []string, index int, value string) []string {
 	a = append(a[:index+1], a[index:]...) // index < len(a)
 	a[index] = value
 	return a
+}
+
+func RemoveAccentMarks(text string) string {
+	t := transform.Chain(norm.NFD, runes.Remove(runes.In(unicode.Mn)), norm.NFC)
+	s, _, _ := transform.String(t, text)
+	return s
 }

@@ -11,8 +11,8 @@ func Word2Num(text string, langCode string) (string, error) {
 	case "es":
 		return Text2NumES(text)
 	case "en":
-		return "", errors.New("language not supported")
+		return text, errors.New("language not supported")
 	default:
-		return "", errors.New("language not supported")
+		return text, errors.New("language not supported")
 	}
 }

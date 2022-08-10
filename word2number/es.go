@@ -191,6 +191,10 @@ func Text2NumES(text string) (string, error) {
 		// fmt.Println("newText[", i, "]: ", v)
 		v := newText[i]
 
+		if v == conectorsES && i == 0 {
+			continue
+		}
+
 		if v == conectorsES {
 			x := newText[i-1]
 			y := newText[i+1]

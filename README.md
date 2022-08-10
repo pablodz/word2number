@@ -2,6 +2,12 @@
 
 Word 2 numbers.
 
+# Install
+
+```bash
+go get -v github.com/pablodz/word2number
+```
+
 # Spanish
 
 - Tested from 0 to 5000

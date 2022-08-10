@@ -3,12 +3,16 @@ package word2number
 import "errors"
 
 func Word2Num(text string, langCode string) (string, error) {
-
-	switch langCode {
-	case "en":
-		return "", errors.New("language not supported")
+	var shortLangCode string
+	if len(langCode) > 2 {
+		shortLangCode = langCode[:2]
+	}
+	switch shortLangCode {
 	case "es":
 		return Text2NumES(text)
+	case "en":
+		return "", errors.New("language not supported")
+	default:
+		return "", errors.New("language not supported")
 	}
-	return "", errors.New("language not supported")
 }

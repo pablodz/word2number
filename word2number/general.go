@@ -2,12 +2,12 @@ package word2number
 
 import "errors"
 
-func Word2Num(value string, langCode string) (int, error) {
+func Word2Num(text string, langCode string) (string, error) {
 
 	if langCode == "en" {
-		return Word2NumEN(value)
+		// return Word2NumEN(text)
 	} else if langCode == "es" {
-		return Text2NumES(value)
+		return Text2NumESNoOrder(text)
 	}
-	return 0, errors.New("language not supported")
+	return "", errors.New("language not supported")
 }

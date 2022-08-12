@@ -2,6 +2,8 @@
 
 Word 2 numbers.
 
+"one" -> 1
+
 # Install
 
 ```bash

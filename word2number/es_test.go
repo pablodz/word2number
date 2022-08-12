@@ -5,8 +5,9 @@ import (
 	"testing"
 )
 
-var (
-	listTexts = map[int]string{
+func TestText2NumES(t *testing.T) {
+
+	listTexts := map[int]string{
 		0:    "cero",
 		1:    "uno",
 		2:    "dos",
@@ -5009,9 +5010,6 @@ var (
 		4999: "cuatro mil novecientos noventa y nueve",
 		5000: "cinco mil",
 	}
-)
-
-func TestText2NumES(t *testing.T) {
 
 	baseText := "Mi código es "
 	for i, v := range listTexts {

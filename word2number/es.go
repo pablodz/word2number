@@ -82,7 +82,7 @@ var (
 		"novecientos",
 	}
 
-	mapLVL3 = map[string]string{
+	mapESLVL3 = map[string]string{
 		"dos mil":    "dosmil",
 		"tres mil":   "tresmil",
 		"cuatro mil": "cuatromil",
@@ -154,7 +154,7 @@ func Text2NumES(text string) (string, error) {
 	newText := []string{}
 	text = strings.Replace(text, ".", " . ", -1)
 	text = strings.Replace(text, ",", " , ", -1)
-	for k, v := range mapLVL3 {
+	for k, v := range mapESLVL3 {
 		text = strings.Replace(text, k, v, -1)
 	}
 	textSplitted := strings.Split(text, " ")
@@ -178,7 +178,7 @@ func Text2NumES(text string) (string, error) {
 			// fmt.Println("case 2")
 			value := Dictionary[wordLower]
 			newText = append(newText, fmt.Sprint(value))
-			newText = append(newText, "y")
+			newText = append(newText, conectorsES)
 		default:
 			// fmt.Println("case default")
 			newText = append(newText, word)
@@ -216,7 +216,7 @@ func Text2NumES(text string) (string, error) {
 		}
 	}
 	// remove y from the end of the text if it exists
-	if newText[len(newText)-1] == "y" {
+	if newText[len(newText)-1] == conectorsES {
 		newText = newText[:len(newText)-1]
 	}
 	// fmt.Println("newText: ", newText)

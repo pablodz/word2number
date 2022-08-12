@@ -2,6 +2,7 @@ package word2number
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 
@@ -11,6 +12,7 @@ import (
 var (
 	// SlicEN without accents
 	unitsEN_LVL0 = []string{
+		"zero",
 		"one",
 		"two",
 		"three",
@@ -95,13 +97,38 @@ var (
 		"ninehundred",
 	}
 
-	// unitsEN_LVL4_1 = []string{
-	// 	"cien",
-	// 	"mil",
-	// 	"millon",
-	// 	"billon",
-	// 	"trillon",
-	// }
+	mapENLVL4 = map[string]string{
+		"one thousand":   "onethousand",
+		"two thousand":   "twothousand",
+		"three thousand": "threethousand",
+		"four thousand":  "fourthousand",
+		"five thousand":  "fivethousand",
+		"six thousand":   "sixthousand",
+		"seven thousand": "seventhousand",
+		"eight thousand": "eighthousand",
+		"nine thousand":  "ninethousand",
+	}
+
+	unitsEN_LVL4_1 = []string{
+		"",
+		"onethousand",
+		"twothousand",
+		"threethousand",
+		"fourthousand",
+		"fivethousand",
+		"sixthousand",
+		"seventhousand",
+		"eighthousand",
+		"ninethousand",
+	}
+
+	unitsEN_LVL4_0 = []string{
+		"hundred",
+		"thousand",
+		"million",
+		"billion",
+		"trillon",
+	}
 
 	conectorsEN = "and"
 )
@@ -127,16 +154,20 @@ func Text2NumEN(text string) (string, error) {
 	}
 	// LVL 3_1
 	for i, v := range unitsEN_LVL3_1 {
-		Dictionary[v] = i * 1000
+		Dictionary[v] = i * 100
+	}
+	// LVL 4_0
+	for i, v := range unitsES_LVL4_0 {
+		if i == 0 {
+			Dictionary[v] = int(math.Pow(10, float64(2)))
+		} else {
+			Dictionary[v] = int(math.Pow(10, float64(i*3)))
+		}
 	}
 	// LVL 4_1
-	// for i, v := range unitsEN_LVL4_1 {
-	// 	if i == 0 {
-	// 		Dictionary[v] = int(math.Pow(10, float64(2)))
-	// 	} else {
-	// 		Dictionary[v] = int(math.Pow(10, float64(i*3)))
-	// 	}
-	// }
+	for i, v := range unitsEN_LVL4_1 {
+		Dictionary[v] = i * 1000
+	}
 	// fmt.Printf("Dictionary: %+v\n", Dictionary)
 
 	/* Algorithm */
@@ -144,6 +175,9 @@ func Text2NumEN(text string) (string, error) {
 	text = strings.Replace(text, ".", " . ", -1)
 	text = strings.Replace(text, ",", " , ", -1)
 	for k, v := range mapENLVL3 {
+		text = strings.Replace(text, k, v, -1)
+	}
+	for k, v := range mapENLVL4 {
 		text = strings.Replace(text, k, v, -1)
 	}
 	textSplitted := strings.Split(text, " ")
@@ -157,16 +191,27 @@ func Text2NumEN(text string) (string, error) {
 
 		wordLower = utils.RemoveAccentMarks(wordLower)
 		switch {
+		case strings.Contains(wordLower, "-"):
+			// fmt.Println("case 0")
+			listnumbers := strings.Split(wordLower, "-")
+			val1 := Dictionary[listnumbers[0]]
+			val2 := Dictionary[listnumbers[1]]
+			// fmt.Println("val1: <" + strconv.Itoa(val1) + ">")
+			// fmt.Println("val2: <" + strconv.Itoa(val2) + ">")
+			value := val1 + val2
+			newText = append(newText, strconv.Itoa(value))
 		case utils.IsItemInSlice(wordLower, unitsEN_LVL0) || utils.IsItemInSlice(wordLower, unitsEN_LVL1):
 			// fmt.Println("case 1")
 			value := Dictionary[wordLower]
 			newText = append(newText, fmt.Sprint(value))
 		case utils.IsItemInSlice(wordLower, unitsEN_LVL2_2) || // utils.IsItemInSlice(wordLower, unitsEN_LVL2_1) ||
-			utils.IsItemInSlice(wordLower, unitsEN_LVL3_1): // utils.IsItemInSlice(wordLower, unitsEN_LVL4_1)
-			// fmt.Println("case 2")
+			utils.IsItemInSlice(wordLower, unitsEN_LVL3_1) ||
+			utils.IsItemInSlice(wordLower, unitsEN_LVL4_0) ||
+			utils.IsItemInSlice(wordLower, unitsEN_LVL4_1): //
+			// fmt.Println("case 2", wordLower)
 			value := Dictionary[wordLower]
 			newText = append(newText, fmt.Sprint(value))
-			newText = append(newText, "y")
+			newText = append(newText, conectorsEN)
 		default:
 			// fmt.Println("case default")
 			newText = append(newText, word)
@@ -204,7 +249,7 @@ func Text2NumEN(text string) (string, error) {
 		}
 	}
 	// remove y from the end of the text if it exists
-	if newText[len(newText)-1] == "y" {
+	if newText[len(newText)-1] == conectorsEN {
 		newText = newText[:len(newText)-1]
 	}
 	// fmt.Println("newText: ", newText)

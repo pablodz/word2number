@@ -106,7 +106,7 @@ var (
 		"nuevemil",
 	}
 
-	unitsES_LVL4_1 = []string{
+	unitsES_LVL4_0 = []string{
 		"cien",
 		"mil",
 		"millon",
@@ -141,7 +141,7 @@ func Text2NumES(text string) (string, error) {
 		Dictionary[v] = i * 1000
 	}
 	// LVL 4_1
-	for i, v := range unitsES_LVL4_1 {
+	for i, v := range unitsES_LVL4_0 {
 		if i == 0 {
 			Dictionary[v] = int(math.Pow(10, float64(2)))
 		} else {
@@ -174,7 +174,7 @@ func Text2NumES(text string) (string, error) {
 			newText = append(newText, fmt.Sprint(value))
 		case utils.IsItemInSlice(wordLower, unitsES_LVL2_1) || utils.IsItemInSlice(wordLower, unitsES_LVL2_2) ||
 			utils.IsItemInSlice(wordLower, unitsES_LVL3_1) ||
-			utils.IsItemInSlice(wordLower, unitsES_LVL4_1):
+			utils.IsItemInSlice(wordLower, unitsES_LVL4_0):
 			// fmt.Println("case 2")
 			value := Dictionary[wordLower]
 			newText = append(newText, fmt.Sprint(value))

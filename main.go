@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	text := "Mi código es eight hundred ninety-nine"
+	text := "My code is one thousand"
 	textFixed, err := word2number.Text2NumEN(text)
 	if err != nil {
 		fmt.Println(err)

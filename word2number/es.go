@@ -152,10 +152,10 @@ func Text2NumES(text string) (string, error) {
 
 	/* Algorithm */
 	newText := []string{}
-	text = strings.Replace(text, ".", " . ", -1)
-	text = strings.Replace(text, ",", " , ", -1)
+	text = strings.ReplaceAll(text, ".", " . ")
+	text = strings.ReplaceAll(text, ",", " , ")
 	for k, v := range mapESLVL3 {
-		text = strings.Replace(text, k, v, -1)
+		text = strings.ReplaceAll(text, k, v)
 	}
 	textSplitted := strings.Split(text, " ")
 	for _, word := range textSplitted {

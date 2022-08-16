@@ -1,4 +1,4 @@
-package word2number
+package lang
 
 import (
 	"fmt"

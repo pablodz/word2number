@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 
-	"github.com/pablodz/word2number/word2number"
+	"github.com/pablodz/word2number/word2number/lang"
 )
 
 func main() {
-	text := "My code is one thousand"
-	textFixed, err := word2number.Text2NumEN(text)
+	text := "My code is cinquenta e nove"
+	textFixed, err := lang.Text2NumPR(text)
 	if err != nil {
 		fmt.Println(err)
 	}

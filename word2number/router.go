@@ -1,6 +1,10 @@
 package word2number
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/pablodz/word2number/word2number/lang"
+)
 
 func Word2Num(text string, langCode string) (string, error) {
 	var shortLangCode string
@@ -9,9 +13,11 @@ func Word2Num(text string, langCode string) (string, error) {
 	}
 	switch shortLangCode {
 	case "es":
-		return Text2NumES(text)
+		return lang.Text2NumES(text)
 	case "en":
-		return text, errors.New("language not supported")
+		return lang.Text2NumEN(text)
+	case "pr":
+		return lang.Text2NumPR(text)
 	default:
 		return text, errors.New("language not supported")
 	}

@@ -49,3 +49,24 @@ fmt.Println("textFixed:\t", textFixed)
 text:            My code is one thousand
 textFixed:       My code is 1000
 ```
+
+# Portuguese
+
+
+- Tested from 0 to 100
+
+
+```golang
+text := "My code is cinquenta e nove"
+textFixed, err := lang.Text2NumPR(text)
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println("text:\t\t", text)
+fmt.Println("textFixed:\t", textFixed)
+```
+
+```bash
+text:            My code is cinquenta e nove
+textFixed:       My code is 59
+```

@@ -114,7 +114,11 @@ var (
 		"trillon",
 	}
 
-	conectorsES = "y"
+	conectorsES    = "y"
+	hyphenES       = "guion"
+	hyphenSymbolES = "-"
+	phoneES        = "mas"
+	phoneSymbolES  = "+"
 )
 
 func Text2NumES(text string) (string, error) {
@@ -219,6 +223,38 @@ func Text2NumES(text string) (string, error) {
 	if newText[len(newText)-1] == conectorsES {
 		newText = newText[:len(newText)-1]
 	}
-	// fmt.Println("newText: ", newText)
-	return strings.Join(newText, " "), nil
+
+	// Hyphens between numbers and phone symbol
+	for i := 0; i < len(newText); i++ {
+		v := newText[i]
+		if v == hyphenES && utils.DigitCheck.MatchString(newText[i-1]) && utils.DigitCheck.MatchString(newText[i+1]) {
+			newText = append(newText[:i], newText[i+1:]...)
+			newText = utils.InsertValueByIndexInSlice(newText, i, hyphenSymbolES)
+			i = i - 1
+		}
+		if utils.RemoveAccentMarks(v) == phoneES && utils.DigitCheck.MatchString(newText[i+1]) {
+			fmt.Println(v)
+			newText = append(newText[:i], newText[i+1:]...)
+			newText = utils.InsertValueByIndexInSlice(newText, i, phoneSymbolES)
+		}
+	}
+	// Join that contains numbers without space
+	finalText := ""
+	for i := 0; i < len(newText); i++ {
+		if i == len(newText)-1 {
+			finalText = finalText + newText[i]
+			continue
+		}
+		switch {
+		case utils.DigitCheck.MatchString(newText[i]) && utils.DigitCheck.MatchString(newText[i+1]):
+			finalText = finalText + newText[i]
+		case newText[i] == phoneSymbolES && utils.DigitCheck.MatchString(newText[i+1]):
+			finalText = finalText + newText[i]
+		default:
+			finalText = finalText + newText[i] + " "
+		}
+	}
+
+	// return strings.Join(newText, " "), nil
+	return finalText, nil
 }

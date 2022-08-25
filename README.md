@@ -2,7 +2,36 @@
 
 Word 2 numbers.
 
-"one" -> 1
+# USE CASES
+
+| INPUT                                                       | OUTPUT                                    |
+| ----------------------------------------------------------- | ----------------------------------------- |
+| siete mil pesos                                             | 7000 pesos                                |
+| ochenta y nueve dólares                                     | 89 dólares                                |
+| seis mil ochenta y cuatro euros                             | 6084 euros                                |
+| cuatro mil novecientos noventa y nueve pesos                | 4999 pesos                                |
+| cero guion cuarenta y cinco guion dos guion catorce         | 0-45-2-14                                 |
+| ABCD tres siete cuatro ocho nueve                           | A B C D 3 7 4 8 9                         |
+| cero uno uno cero uno                                       | 1011                                      |
+| más cero setenta y seis                                     | 067                                       |
+| Calle cuarenta y tres a la cuarenta y siete                 | Calle 43 a la 47                          |
+| veinte de agosto                                            | 20 de agosto                              |
+| cinco de julio                                              | 5 de julio                                |
+| primero de febrero                                          | primero de febrero                        |
+| primero del ocho del dos mil diez                           | primero del 8 del 1980                    |
+| treinta y dos de febrero de mil novecientos ochenta         | 32 de febrero de 1980                     |
+| 31 de diciembre del seis mil doce                           | 31 de dicieembre de 6012                  |
+| menos 15                                                    | \-15                                      |
+| menos 18 años                                               | \-18 años                                 |
+| veinticinco                                                 | 25                                        |
+| treinta positivo                                            | 30 positivo                               |
+| treinta y cinco negativo                                    | 35 negativo                               |
+| menos seis mil                                              | \-6000                                    |
+| veinte años                                                 | 20 años                                   |
+| cero                                                        | 0                                         |
+| siete años tres meses ocho dias quince horas nueve segundos | 7 años 3 meses 8 dias 15 horas 9 segundos |
+| mil veintiocho punto tres cuatro                            | 1028.34                                   |
+
 
 # Install
 

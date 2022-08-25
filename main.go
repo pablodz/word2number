@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	text := "My code is cinquenta e nove"
-	textFixed, err := lang.Text2NumPR(text)
+	text := "Mi celular es más cero cero uno ocho nueve cinco seis dos tres siete ocho , se entendió?"
+	textFixed, err := lang.Text2NumES(text)
 	if err != nil {
 		fmt.Println(err)
 	}

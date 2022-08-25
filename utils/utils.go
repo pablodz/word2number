@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"regexp"
 	"unicode"
 
 	"golang.org/x/text/runes"
@@ -31,3 +32,5 @@ func RemoveAccentMarks(text string) string {
 	s, _, _ := transform.String(t, text)
 	return s
 }
+
+var DigitCheck = regexp.MustCompile(`^[0-9]+$`)

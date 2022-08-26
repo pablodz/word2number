@@ -114,11 +114,13 @@ var (
 		"trillon",
 	}
 
-	conectorsES    = "y"
-	hyphenES       = "guion"
-	hyphenSymbolES = "-"
-	phoneES        = "mas"
-	phoneSymbolES  = "+"
+	conectorsES      = "y"
+	hyphenES         = "guion"
+	hyphenSymbolES   = "-"
+	phoneES          = "mas"
+	phoneSymbolES    = "+"
+	negativeES       = "menos"
+	negativeSymbolES = "-"
 )
 
 func Text2NumES(text string) (string, error) {
@@ -232,6 +234,11 @@ func Text2NumES(text string) (string, error) {
 			newText = utils.InsertValueByIndexInSlice(newText, i, hyphenSymbolES)
 			i = i - 1
 		}
+		if utils.RemoveAccentMarks(v) == negativeES && utils.DigitCheck.MatchString(newText[i+1]) {
+			fmt.Println(v)
+			newText = append(newText[:i], newText[i+1:]...)
+			newText = utils.InsertValueByIndexInSlice(newText, i, negativeSymbolES)
+		}
 		if utils.RemoveAccentMarks(v) == phoneES && utils.DigitCheck.MatchString(newText[i+1]) {
 			fmt.Println(v)
 			newText = append(newText[:i], newText[i+1:]...)
@@ -247,6 +254,8 @@ func Text2NumES(text string) (string, error) {
 		}
 		switch {
 		case utils.DigitCheck.MatchString(newText[i]) && utils.DigitCheck.MatchString(newText[i+1]):
+			finalText = finalText + newText[i]
+		case newText[i] == negativeSymbolES && utils.DigitCheck.MatchString(newText[i+1]):
 			finalText = finalText + newText[i]
 		case newText[i] == phoneSymbolES && utils.DigitCheck.MatchString(newText[i+1]):
 			finalText = finalText + newText[i]

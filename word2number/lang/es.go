@@ -227,7 +227,7 @@ func Text2NumES(text string) (string, error) {
 	}
 
 	// Hyphens between numbers and phone symbol
-	for i := 0; i < len(newText); i++ {
+	for i := 0; i < len(newText)-1; i++ {
 		v := newText[i]
 		if v == hyphenES && utils.DigitCheck.MatchString(newText[i-1]) && utils.DigitCheck.MatchString(newText[i+1]) {
 			newText = append(newText[:i], newText[i+1:]...)

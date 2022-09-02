@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	text := "Mi celular es menos cero cero uno ocho nueve cinco seis dos tres siete ocho años, se entendió?"
+	text := "cuatro guion diecisiete "
 	textFixed, err := lang.Text2NumES(text)
 	if err != nil {
 		fmt.Println(err)

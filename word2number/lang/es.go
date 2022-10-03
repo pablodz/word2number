@@ -125,6 +125,12 @@ var (
 
 func Text2NumES(text string) (string, error) {
 
+	// Exceptions
+	text = strings.TrimSpace(text)
+	if text == conectorsES {
+		return text, nil
+	}
+
 	// LVL 0
 	Dictionary := map[string]int{}
 	for i, v := range unitsES_LVL0 {

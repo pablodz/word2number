@@ -83,14 +83,26 @@ var (
 	}
 
 	mapESLVL3 = map[string]string{
-		"dos mil":    "dosmil",
-		"tres mil":   "tresmil",
-		"cuatro mil": "cuatromil",
-		"cinco mil":  "cincomil",
-		"seis mil":   "seismil",
-		"siete mil":  "setemil",
-		"ocho mil":   "ochomil",
-		"nueve mil":  "nuevemil",
+		"dos mil":        "dosmil",
+		"tres mil":       "tresmil",
+		"cuatro mil":     "cuatromil",
+		"cinco mil":      "cincomil",
+		"seis mil":       "seismil",
+		"siete mil":      "sietemil",
+		"ocho mil":       "ochomil",
+		"nueve mil":      "nuevemil",
+		"diez mil":       "diezmil",
+		"once mil":       "oncemil",
+		"doce mil":       "docemil",
+		"trece mil":      "trecemil",
+		"catorce mil":    "catorcemil",
+		"quince mil":     "quincemil",
+		"dieciseis mil":  "dieciseismil",
+		"dieciséis mil":  "dieciseismil", // accent because parsed before remove accents
+		"diecisiete mil": "diecisietemil",
+		"dieciocho mil":  "dieciochomil",
+		"diecinueve mil": "diecinuevemil",
+		"veinte mil":     "veintemil",
 	}
 
 	unitsES_LVL3_1 = []string{
@@ -101,9 +113,20 @@ var (
 		"cuatromil",
 		"cincomil",
 		"seismil",
-		"setemil",
+		"sietemil",
 		"ochomil",
 		"nuevemil",
+		"diezmil",
+		"oncemil",
+		"docemil",
+		"trecemil",
+		"catorcemil",
+		"quincemil",
+		"dieciseismil",
+		"diecisietemil",
+		"dieciochomil",
+		"diecinuevemil",
+		"veintemil",
 	}
 
 	unitsES_LVL4_0 = []string{
@@ -177,8 +200,8 @@ func Text2NumES(text string) (string, error) {
 		wordLower := strings.ToLower(word)
 		// fmt.Println("wordLower: <" + wordLower + ">")
 		// First iteration
-
 		wordLower = utils.RemoveAccentMarks(wordLower)
+		// fmt.Println("wordLower: <" + wordLower + ">")
 		switch {
 		case utils.IsItemInSlice(wordLower, unitsES_LVL0) || utils.IsItemInSlice(wordLower, unitsES_LVL1):
 			// fmt.Println("case 1")

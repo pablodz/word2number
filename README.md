@@ -41,7 +41,7 @@ go get -v github.com/pablodz/word2number
 
 # Spanish
 
-- Tested from 0 to 9999
+- Tested from 0 to 20000
 
 
 ```golang

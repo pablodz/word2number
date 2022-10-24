@@ -1,6 +1,6 @@
-# word2number
+# ONLY USE FOR REALLY-FAST CONVERTION. USE NEMO OPEN-SOURCE INSTEAD OF THIS IF YOU WANT TO SUPPORT MORE NUMERALS AND LANGUAGES
 
-Word 2 numbers.
+https://github.com/NVIDIA/NeMo/tree/main/nemo_text_processing/inverse_text_normalization
 
 # USE CASES
 

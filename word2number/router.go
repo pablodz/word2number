@@ -19,6 +19,6 @@ func Word2Num(text string, langCode string) (string, error) {
 	case "pr":
 		return lang.Text2NumPR(text)
 	default:
-		return text, errors.New("language not supported")
+		return text, errors.New("language not supported <" + langCode + ">")
 	}
 }
